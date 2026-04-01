@@ -98,6 +98,7 @@ Evaluates portfolios as products competing for hiring decisions. Runs a 7-step w
 | `skills/homepage-rewrite-skill.md` | `/homepage-rewrite-skill` | Headline, subtext, CTA, and section label rewrites |
 | `skills/mobile-qa-skill.md` | `/mobile-qa-skill` | 375px mobile QA checklist |
 | `skills/portfolio-consistency-skill.md` | `/portfolio-consistency-skill` | Extract positioning, tone, and structure patterns for cross-page consistency |
+| `skills/portfolio-execution-skill.md` | `/portfolio-execution-skill` | Execute audit findings and rewrites directly to portfolio files |
 
 ---
 
@@ -117,6 +118,7 @@ cp portfolio-ai-system/skills/hiring-simulation-skill.md ~/.claude/commands/hiri
 cp portfolio-ai-system/skills/homepage-rewrite-skill.md ~/.claude/commands/homepage-rewrite-skill.md
 cp portfolio-ai-system/skills/mobile-qa-skill.md ~/.claude/commands/mobile-qa-skill.md
 cp portfolio-ai-system/skills/portfolio-consistency-skill.md ~/.claude/commands/portfolio-consistency-skill.md
+cp portfolio-ai-system/skills/portfolio-execution-skill.md ~/.claude/commands/portfolio-execution-skill.md
 ```
 
 Then invoke in any Claude Code session:

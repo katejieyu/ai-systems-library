@@ -16,6 +16,7 @@ Evaluates portfolios as products competing for hiring decisions. Runs a 7-step w
 | `skills/homepage-rewrite-skill.md` | Headline, subtext, CTA, and section label rewrites |
 | `skills/mobile-qa-skill.md` | 375px mobile responsiveness and overflow QA checklist |
 | `skills/portfolio-consistency-skill.md` | Extracts positioning, tone, and structure patterns for cross-page consistency |
+| `skills/portfolio-execution-skill.md` | Executes audit findings and rewrites directly to portfolio files — produces a change log |
 
 ---
 
@@ -32,6 +33,7 @@ cp skills/hiring-simulation-skill.md ~/.claude/commands/hiring-simulation-skill.
 cp skills/homepage-rewrite-skill.md ~/.claude/commands/homepage-rewrite-skill.md
 cp skills/mobile-qa-skill.md ~/.claude/commands/mobile-qa-skill.md
 cp skills/portfolio-consistency-skill.md ~/.claude/commands/portfolio-consistency-skill.md
+cp skills/portfolio-execution-skill.md ~/.claude/commands/portfolio-execution-skill.md
 ```
 
 ---
@@ -60,6 +62,7 @@ Individual skills:
 | `/homepage-rewrite-skill [page]` | Homepage copy rewrite |
 | `/mobile-qa-skill [page]` | Mobile QA checklist |
 | `/portfolio-consistency-skill [portfolio]` | Extract consistency guide for new pages |
+| `/portfolio-execution-skill [audit output or page]` | Execute fixes directly to portfolio files |
 
 ---
 

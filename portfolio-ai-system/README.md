@@ -26,10 +26,14 @@ Evaluates portfolios as products competing for hiring decisions. Runs a 7-step w
 ## Install
 
 ```bash
-cp portfolio-ai-system.md ~/.claude/commands/portfolio-ai-system.md
+# Install all skills at once
+cp portfolio-ai-system.md ~/.claude/commands/portfolio-ai-system.md && \
+cp portfolio-audit-workflow.md ~/.claude/commands/portfolio-audit-workflow.md && \
+cp skills/*.md ~/.claude/commands/ && \
+cp workflows/*.md ~/.claude/commands/
 ```
 
-Individual skills can be copied separately and invoked independently:
+Or install individually:
 
 ```bash
 cp skills/hiring-simulation-skill.md ~/.claude/commands/hiring-simulation-skill.md
@@ -64,6 +68,7 @@ cp workflows/portfolio-site-scan-workflow.md ~/.claude/commands/portfolio-site-s
 | `/portfolio-ai-system scan-site [site]` | Full-site audit across all pages — cross-page consistency, system-level issues, top 10 fixes |
 | `/portfolio-ai-system scan-site + execution [site]` | Full-site audit + page-by-page fix generation |
 | `/site-execution-skill [scan-site report]` | Apply scan-site findings as page-by-page exact changes — produces change log |
+| `/portfolio-ai-system content-strategy [portfolio]` | Define content strategy — pillars, signal hierarchy, tone, what to remove |
 
 Individual skills:
 
@@ -90,6 +95,11 @@ Individual skills:
 | 5 | UX / QA / Mobile Check | Scanning, navigation, links, mobile responsiveness |
 | 6 | Rewrite & Improvement | Exact before/after rewrites for homepage, CTAs, copy |
 | 7 | Execution Plan | Immediate fixes, short-term improvements, structural changes |
+
+**Extended commands (run after the 7-step audit):**
+- `content-strategy` — define what to say, what to remove, signal hierarchy
+- `strategy-check` — validate site execution against the defined strategy
+- `scan-site` — full cross-page audit with consistency detection
 
 ---
 

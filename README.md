@@ -29,7 +29,19 @@ ai-systems/
 
   product-ai-system/
     README.md
-    ai-system.md
+    product-ai-system.md
+    skills/
+      self-inquiry-skill.md
+      self-hypothesis-skill.md
+      self-test-loop-skill.md
+      gap-detection-skill.md
+      self-healing-execution-skill.md
+      persona-journey-refresh-skill.md
+      readme-sync-skill.md
+    workflows/
+      product-full-cycle-workflow.md
+      product-self-evolution-workflow.md
+      feature-change-loop-workflow.md
 ```
 
 ---
@@ -38,15 +50,17 @@ ai-systems/
 
 ### 1. Product AI System (`/product-ai-system`)
 
-A structured product reasoning engine for designers, PMs, and engineers.
+A self-evolving product reasoning engine for designers, PMs, and engineers.
 
 Moves product work from raw problem to execution-ready output through a 9-skill chain. Does not agree with your framing. Surfaces contradictions, flags assumptions, and forces decisions before they become blockers in engineering.
 
-**Skill file:** `product-ai-system/ai-system.md`
-**Install:** `cp product-ai-system/ai-system.md ~/.claude/commands/ai-system.md`
-**Invoke:** `/ai-system [problem or idea]`
+Also includes a **self-evolution mode** — the system can turn inward, detect its own drift, regenerate assumptions, and heal gaps without a full audit cycle.
 
-**The 9-Skill Chain:**
+**Skill file:** `product-ai-system/product-ai-system.md`
+**Install:** `cp product-ai-system/product-ai-system.md ~/.claude/commands/product-ai-system.md`
+**Invoke:** `/product-ai-system [problem or idea]`
+
+**The 9-Skill Chain (Product Problem Mode):**
 
 | # | Skill | What It Does |
 |---|---|---|
@@ -60,15 +74,36 @@ Moves product work from raw problem to execution-ready output through a 9-skill 
 | 8 | Self Test | Simulates review from User, PM, Designer, Engineer perspectives |
 | 9 | Execution Readiness | Breaks into epics, tasks, acceptance criteria, and a readiness score |
 
-**Modes:**
+**Product Problem Mode:**
 
 | Command | Use |
 |---|---|
-| `/ai-system [problem]` | Full 9-skill cycle |
-| `/ai-system fast [problem]` | Compressed 5-skill cycle |
-| `/ai-system skill [1-9] [input]` | Single skill in isolation |
-| `/ai-system brief [problem]` | Problem brief only (Skills 1-2) |
-| `/ai-system prd [problem]` | Full PRD (Skills 1-6) |
+| `/product-ai-system [problem]` | Full 9-skill cycle |
+| `/product-ai-system fast [problem]` | Compressed 5-skill cycle |
+| `/product-ai-system skill [1-9] [input]` | Single skill in isolation |
+| `/product-ai-system brief [problem]` | Problem brief only (Skills 1–2) |
+| `/product-ai-system prd [problem]` | Full PRD (Skills 1–6) |
+
+**Self-Evolution Mode:**
+
+| Command | Use |
+|---|---|
+| `/product-ai-system evolve` | Run self-evolution loop on the system itself |
+| `/product-ai-system feature-update [feature]` | Re-align system after a feature changes |
+| `/product-ai-system refresh-persona` | Update persona and journey definitions |
+| `/product-ai-system sync-readme` | Sync documentation to current system state |
+
+**Self-Evolution Sub-Skills** (`/skills`):
+
+| File | What It Does |
+|---|---|
+| `self-inquiry-skill.md` | Challenge current assumptions before generating anything |
+| `self-hypothesis-skill.md` | Generate testable hypotheses from gaps |
+| `self-test-loop-skill.md` | Simulate usage to find real failure points |
+| `gap-detection-skill.md` | Find missing logic and undefined states |
+| `self-healing-execution-skill.md` | Fix gaps directly — no analysis, only action |
+| `persona-journey-refresh-skill.md` | Update persona and journey after context changes |
+| `readme-sync-skill.md` | Align documentation with current system state |
 
 ---
 
@@ -93,17 +128,18 @@ Evaluates portfolios as products competing for hiring decisions. Runs a 7-step w
 | `/portfolio-ai-system hiring [portfolio]` | Hiring simulation only |
 | `/portfolio-ai-system learn-site [existing pages]` | Extract consistency guide from current site |
 | `/portfolio-ai-system consistency-check [new page]` | Check a new page against the site's established patterns |
+| `/portfolio-ai-system content-strategy [portfolio]` | Define content strategy — pillars, signal hierarchy, tone, what to remove |
 | `/portfolio-ai-system strategy-check [site/folder]` | Validate site against its content strategy — alignment score, drift, gaps, top fixes |
-| `/portfolio-execution-skill [audit output or page]` | Execute all fixes directly to files — produces change log |
 | `/portfolio-ai-system scan-site [site]` | Full-site audit across all pages — cross-page consistency, system-level issues, top 10 fixes |
 | `/portfolio-ai-system scan-site + execution [site]` | Full-site audit + page-by-page fix generation |
+| `/portfolio-execution-skill [audit output or page]` | Execute all fixes directly to files — produces change log |
 | `/site-execution-skill [scan-site report]` | Apply scan-site findings as page-by-page exact changes — produces change log |
 
 **Modular Skills** (install and invoke independently):
 
 | File | Command | What It Does |
 |---|---|---|
-| `portfolio-audit-workflow.md` | -- | Full 7-step structured audit (standalone workflow) |
+| `portfolio-audit-workflow.md` | `/portfolio-audit-workflow` | Full 7-step structured audit (standalone workflow) |
 | `skills/hiring-simulation-skill.md` | `/hiring-simulation-skill` | 4-perspective hiring simulation with interview verdicts |
 | `skills/homepage-rewrite-skill.md` | `/homepage-rewrite-skill` | Headline, subtext, CTA, and section label rewrites |
 | `skills/mobile-qa-skill.md` | `/mobile-qa-skill` | 375px mobile QA checklist |
@@ -111,22 +147,26 @@ Evaluates portfolios as products competing for hiring decisions. Runs a 7-step w
 | `skills/portfolio-content-strategy-skill.md` | `/portfolio-content-strategy-skill` | Define content strategy — what to say, signal hierarchy, tone, and what to remove |
 | `skills/portfolio-execution-skill.md` | `/portfolio-execution-skill` | Execute audit findings and rewrites directly to portfolio files |
 | `skills/site-execution-skill.md` | `/site-execution-skill` | Apply scan-site findings page-by-page — canonical decisions, exact replacements, change log |
-| `portfolio-site-scan-workflow.md` | `/portfolio-site-scan-workflow` | Full-site audit — scans all pages, cross-page consistency, top 10 fixes |
+| `workflows/portfolio-site-scan-workflow.md` | `/portfolio-site-scan-workflow` | Full-site audit — scans all pages, cross-page consistency, top 10 fixes |
 
 ---
 
 ## Installation
 
-Copy any skill file to your Claude commands folder and invoke it with `/skill-name`:
-
 ```bash
 # Product AI System
-cp product-ai-system/ai-system.md ~/.claude/commands/ai-system.md
+cp product-ai-system/product-ai-system.md ~/.claude/commands/product-ai-system.md
 
-# Portfolio AI System (main)
-cp portfolio-ai-system/portfolio-ai-system.md ~/.claude/commands/portfolio-ai-system.md
+# Portfolio AI System — all at once
+cp portfolio-ai-system/portfolio-ai-system.md ~/.claude/commands/portfolio-ai-system.md && \
+cp portfolio-ai-system/portfolio-audit-workflow.md ~/.claude/commands/portfolio-audit-workflow.md && \
+cp portfolio-ai-system/skills/*.md ~/.claude/commands/ && \
+cp portfolio-ai-system/workflows/*.md ~/.claude/commands/
+```
 
-# Portfolio AI System (individual skills)
+Or install individual portfolio skills:
+
+```bash
 cp portfolio-ai-system/skills/hiring-simulation-skill.md ~/.claude/commands/hiring-simulation-skill.md
 cp portfolio-ai-system/skills/homepage-rewrite-skill.md ~/.claude/commands/homepage-rewrite-skill.md
 cp portfolio-ai-system/skills/mobile-qa-skill.md ~/.claude/commands/mobile-qa-skill.md
@@ -140,17 +180,17 @@ cp portfolio-ai-system/workflows/portfolio-site-scan-workflow.md ~/.claude/comma
 Then invoke in any Claude Code session:
 
 ```
-/ai-system [your problem]
+/product-ai-system [your problem]
+/product-ai-system evolve
 /portfolio-ai-system audit [your portfolio]
-/portfolio-ai-system learn-site [existing pages]
-/portfolio-ai-system consistency-check [new page]
+/portfolio-ai-system scan-site [your site]
 ```
 
 ---
 
 ## Output Quality Rules (Both Systems)
 
-- No generic language -- no "seamless," "intuitive," "holistic," "best-in-class"
+- No generic language — no "seamless," "intuitive," "holistic," "best-in-class"
 - Every metric has a number and a measurement method
 - Every task and open decision has exactly one named owner
 - Assumptions are labeled as assumptions, never stated as facts

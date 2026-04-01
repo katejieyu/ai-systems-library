@@ -97,13 +97,13 @@ Check:
 
 ### Step 6 — Mirror
 
-After all changes are applied to katejieyu.com, mirror to newkatejieyu.com:
+If a secondary site exists (e.g. a staging or mirror domain), mirror changes after applying to the primary site:
 
 ```
-cp katejieyu.com/[path] newkatejieyu.com/[path]
+cp [primary-site]/[path] [secondary-site]/[path]
 ```
 
-Confirm mirror for each file or note as skipped with reason.
+Confirm mirror for each file or note as skipped with reason. If no secondary site exists, mark this step as N/A.
 
 ---
 

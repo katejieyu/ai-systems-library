@@ -136,10 +136,11 @@ Ensure:
 
 After all fixes are applied to the primary file, mirror to the secondary site if one exists.
 
-Standard mirror path:
 ```
-cp katejieyu.com/[path] newkatejieyu.com/[path]
+cp [primary-site]/[path] [secondary-site]/[path]
 ```
+
+If no secondary site exists, mark this step as N/A.
 
 ---
 

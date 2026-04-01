@@ -67,6 +67,45 @@ scan-site → content-strategy → consistency → execution
 
 ---
 
+## Portfolio Drift Protocol
+
+This system can drift from the portfolio it serves. Trigger re-alignment when:
+- The portfolio has been significantly updated but the system hasn't been re-run
+- Prior audit outputs have been consistently wrong or incomplete
+- The user's target role or level has changed
+- A case study has been added or removed that affects positioning
+
+**When triggered, run this sequence:**
+
+**Step 0 — Pre-check (do this before re-running anything):**
+Identify what changed: new pages, removed pages, new case studies, role change, or positioning shift. Flag which prior audit outputs are now stale. Only re-run what the change affects.
+
+**Step 1 — Re-establish baseline:**
+```
+/portfolio-ai-system learn-site [updated pages]
+```
+Extract current positioning, tone, structure, and CTA patterns from the updated portfolio.
+
+**Step 2 — Redefine strategy if role or positioning changed:**
+```
+/portfolio-ai-system content-strategy [portfolio]
+```
+Skip this step if only content was updated (not positioning or target role).
+
+**Step 3 — Check new or changed pages for consistency:**
+```
+/portfolio-ai-system consistency-check [changed pages]
+```
+
+**Step 4 — Re-run full audit:**
+```
+/portfolio-ai-system audit [portfolio]
+```
+
+This system's internal logic (7-step workflow, hiring simulation rules) does not drift — what drifts is the system's knowledge of the portfolio it serves. Re-running the sequence above resets that knowledge.
+
+---
+
 # Page Loop (Site-Level Audits)
 
 When running `/portfolio-ai-system scan-site`, use this loop for EACH page:

@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Systems Library</title>
+  <meta name="description" content="Structured reasoning systems for Claude Code. Replace ad-hoc AI prompting with defined workflows that produce consistent, decision-quality outputs.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --text-primary:   #111827;
+      --text-secondary: #374151;
+      --text-muted:     #6b7280;
+      --text-faint:     #9ca3af;
+      --border:         #e5e7eb;
+      --border-light:   #f3f4f6;
+      --bg:             #ffffff;
+      --bg-subtle:      #f9fafb;
+      --blue:           #2563eb;
+      --blue-bg:        rgba(37,99,235,0.07);
+      --green:          #059669;
+      --green-bg:       rgba(16,185,129,0.08);
+      --purple:         #7c3aed;
+      --purple-bg:      rgba(124,58,237,0.08);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── LAYOUT ── */
+    .page { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── HEADER ── */
+    .site-header {
+      padding: 64px 0 48px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 56px;
+    }
+    .site-header-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .site-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--green);
+      background: var(--green-bg);
+      padding: 4px 10px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+    .site-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      flex-shrink: 0;
+    }
+    .site-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .site-desc {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 560px;
+    }
+    .site-github {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 8px;
+      white-space: nowrap;
+      transition: border-color 0.15s;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+    .site-github:hover { border-color: #d1d5db; }
+    .site-github svg { opacity: 0.6; }
+
+    /* ── QUICK INSTALL BANNER ── */
+    .quick-install {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 56px;
+    }
+    .quick-install-label {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-faint);
+      margin-bottom: 14px;
+    }
+    .quick-install-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    .install-blocks {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .install-block {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+    }
+    .install-block-name {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+      width: 160px;
+      flex-shrink: 0;
+    }
+    .install-block-cmd {
+      font-family: ui-monospace, 'SFMono-Regular', monospace;
+      font-size: 0.8125rem;
+      color: var(--blue);
+      flex: 1;
+      overflow-x: auto;
+    }
+    .copy-btn {
+      flex-shrink: 0;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .copy-btn:hover { border-color: #d1d5db; color: var(--text-primary); }
+    .copy-btn.copied { color: var(--green); border-color: var(--green-bg); }
+
+    /* ── SECTION HEADING ── */
+    .section-heading {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-faint);
+      margin-bottom: 20px;
+    }
+
+    /* ── SYSTEM CARDS ── */
+    .systems { display: flex; flex-direction: column; gap: 20px; margin-bottom: 64px; }
+
+    .system-card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    /* Card top — colored accent bar */
+    .system-card--product .card-accent { background: var(--blue); }
+    .system-card--portfolio .card-accent { background: var(--purple); }
+    .card-accent { height: 3px; }
+
+    .card-body { padding: 28px 32px 0; }
+
+    /* Card header */
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .card-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .card-subtitle {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .card-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--green);
+      background: var(--green-bg);
+      padding: 4px 10px;
+      border-radius: 100px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .card-status::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    /* Card description */
+    .card-desc {
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    /* Skills / workflow pills */
+    .card-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+    .card-pill {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      padding: 4px 10px;
+      border-radius: 100px;
+    }
+    .card-pill--evo {
+      color: var(--purple);
+      background: var(--purple-bg);
+      border-color: transparent;
+    }
+
+    /* Card footer — install + links */
+    .card-footer {
+      border-top: 1px solid var(--border-light);
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      background: var(--bg-subtle);
+    }
+    .card-install {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+    }
+    .card-install-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-faint);
+      white-space: nowrap;
+    }
+    .card-install-cmd {
+      font-family: ui-monospace, 'SFMono-Regular', monospace;
+      font-size: 0.8125rem;
+      color: var(--blue);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .card-links {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      padding: 7px 14px;
+      border-radius: 8px;
+      transition: all 0.15s;
+      border: 1px solid var(--border);
+    }
+    .card-link--primary {
+      background: var(--text-primary);
+      color: #fff;
+      border-color: var(--text-primary);
+    }
+    .card-link--primary:hover { background: #1f2937; border-color: #1f2937; }
+    .card-link--secondary {
+      background: var(--bg);
+      color: var(--text-secondary);
+    }
+    .card-link--secondary:hover { border-color: #d1d5db; color: var(--text-primary); }
+
+    /* ── COMMANDS SECTION (expandable) ── */
+    .card-commands { padding: 0 32px 24px; }
+    .commands-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      margin-bottom: 16px;
+      transition: color 0.15s;
+    }
+    .commands-toggle:hover { color: var(--text-primary); }
+    .commands-toggle svg { transition: transform 0.2s; }
+    .commands-toggle[aria-expanded="true"] svg { transform: rotate(90deg); }
+
+    .commands-list {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .commands-list.open { display: flex; }
+    .command-row {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      background: var(--bg-subtle);
+    }
+    .command-row:hover { background: #f3f4f6; }
+    .command-cmd {
+      font-family: ui-monospace, 'SFMono-Regular', monospace;
+      font-size: 0.8125rem;
+      color: var(--blue);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .command-desc {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ── ADD MORE CARD ── */
+    .system-card--add {
+      border-style: dashed;
+      border-color: #d1d5db;
+    }
+    .add-body {
+      padding: 32px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .add-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      border: 1.5px dashed #d1d5db;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-faint);
+      flex-shrink: 0;
+      font-size: 1.25rem;
+      font-weight: 300;
+    }
+    .add-text-title {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+    .add-text-desc {
+      font-size: 0.8125rem;
+      color: var(--text-faint);
+      line-height: 1.6;
+    }
+    .add-text-desc code {
+      font-family: ui-monospace, 'SFMono-Regular', monospace;
+      font-size: 0.8125rem;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-light);
+      padding: 1px 5px;
+      border-radius: 4px;
+      color: var(--text-secondary);
+    }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .footer-copy {
+      font-size: 0.8125rem;
+      color: var(--text-faint);
+    }
+    .footer-copy a {
+      color: var(--text-muted);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .footer-copy a:hover { color: var(--text-primary); }
+    .footer-principle {
+      font-size: 0.8125rem;
+      color: var(--text-faint);
+      font-style: italic;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .site-header { padding: 40px 0 32px; }
+      .site-title { font-size: 1.5rem; }
+      .card-body { padding: 20px 20px 0; }
+      .card-footer { padding: 16px 20px; }
+      .card-commands { padding: 0 20px 20px; }
+      .install-block { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .install-block-name { width: auto; }
+      .card-header { flex-direction: column; gap: 10px; }
+      .add-body { flex-direction: column; align-items: flex-start; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- HEADER -->
+    <header class="site-header">
+      <div class="site-header-top">
+        <div>
+          <div class="site-badge">Claude Code Skills</div>
+          <h1 class="site-title">AI Systems Library</h1>
+          <p class="site-desc">Structured reasoning systems for Claude Code. Instead of prompting from scratch every time, you invoke a system — it runs a defined workflow, enforces reasoning structure, and produces consistent outputs.</p>
+        </div>
+        <a href="https://github.com/katejieyu/ai-systems-library" class="site-github" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          View on GitHub
+        </a>
+      </div>
+    </header>
+
+    <!-- QUICK INSTALL -->
+    <div class="quick-install">
+      <div class="quick-install-label">Quick Install</div>
+      <p class="quick-install-desc">Each system is a <code style="font-family:ui-monospace,monospace;font-size:0.8125rem;background:#fff;border:1px solid #e5e7eb;padding:1px 5px;border-radius:4px;">.md</code> file. Copy it to <code style="font-family:ui-monospace,monospace;font-size:0.8125rem;background:#fff;border:1px solid #e5e7eb;padding:1px 5px;border-radius:4px;">~/.claude/commands/</code> once — then invoke it by name in any Claude Code session.</p>
+      <div class="install-blocks">
+        <div class="install-block">
+          <div class="install-block-name">Product AI System</div>
+          <div class="install-block-cmd">cp product-ai-system/product-ai-system.md ~/.claude/commands/product-ai-system.md</div>
+          <button class="copy-btn" onclick="copyInstall(this, 'cp product-ai-system/product-ai-system.md ~/.claude/commands/product-ai-system.md')">Copy</button>
+        </div>
+        <div class="install-block">
+          <div class="install-block-name">Portfolio AI System</div>
+          <div class="install-block-cmd">cp portfolio-ai-system/portfolio-ai-system.md ~/.claude/commands/portfolio-ai-system.md</div>
+          <button class="copy-btn" onclick="copyInstall(this, 'cp portfolio-ai-system/portfolio-ai-system.md ~/.claude/commands/portfolio-ai-system.md')">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SYSTEMS -->
+    <p class="section-heading">Live Systems</p>
+    <div class="systems">
+
+      <!-- PRODUCT AI SYSTEM -->
+      <div class="system-card system-card--product">
+        <div class="card-accent"></div>
+        <div class="card-body">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Product AI System</div>
+              <div class="card-subtitle">For designers, PMs, and engineers</div>
+            </div>
+            <span class="card-status">Live</span>
+          </div>
+
+          <p class="card-desc">
+            Takes a product problem — vague idea, named feature, or draft PRD — and moves it through a structured 9-skill chain to execution-ready output. The system doesn't agree with your framing. It finds the real problem behind your request, challenges the solution before you build it, and breaks everything into tasks with acceptance criteria and a readiness score.
+          </p>
+          <p class="card-desc" style="margin-top:-12px;">
+            Also has a <strong>self-evolution mode</strong> — when its own assumptions drift, it can turn inward, detect gaps, and fix its own workflow without a full rebuild.
+          </p>
+
+          <div class="card-pills">
+            <span class="card-pill">Define Issue</span>
+            <span class="card-pill">Diagnose</span>
+            <span class="card-pill">Define Goal</span>
+            <span class="card-pill">Generate Solution</span>
+            <span class="card-pill">Challenge</span>
+            <span class="card-pill">Refine</span>
+            <span class="card-pill">Self Study</span>
+            <span class="card-pill">Self Test</span>
+            <span class="card-pill">Execution Readiness</span>
+            <span class="card-pill card-pill--evo">✦ Self-Evolution Mode</span>
+          </div>
+        </div>
+
+        <div class="card-commands">
+          <button class="commands-toggle" aria-expanded="false" onclick="toggleCommands(this)">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 2l4 4-4 4"/></svg>
+            All commands
+          </button>
+          <div class="commands-list">
+            <div class="command-row">
+              <span class="command-cmd">/product-ai-system [problem]</span>
+              <span class="command-desc">Full 9-skill cycle — raw problem to execution plan</span>
+            </div>
+            <div class="command-row">
+              <span class="command-cmd">/product-ai-system fast [problem]</span>
+              <span class="command-desc">Compressed 5-skill pass — faster, less depth</span>
+            </div>
+            <div class="command-row">
+              <span class="command-cmd">/product-ai-system brief [problem]</span>
+              <span class="command-desc">Problem definition only (Skills 1–2)</span>
+            </div>
+            <div class="command-row">
+              <span class="command-cmd">/product-ai-system prd [problem]</span>
+              <span class="command-desc">Full PRD output (Skills 1–6)</span>
+            </div>
+            <div class="command-row">
+              <span class="command-cmd">/product-ai-system skill [1-9] [input]</span>
+              <span class="command-desc">Run a single skill in isolation</span>
+            </div>
+            <div class="command-row" style="background:var(--purple-bg);">
+              <span class="command-cmd" style="color:var(--purple);">/product-ai-system evolve</span>
+              <span class="command-desc">Self-evolution loop — detect drift, fix gaps, re-test</span>
+            </div>
+            <div class="command-row" style="background:var(--purple-bg);">
+              <span class="command-cmd" style="color:var(--purple);">/product-ai-system feature-update [feature]</span>
+              <span class="command-desc">Re-align system after a feature changes</span>
+            </div>
+            <div class="command-row" style="background:var(--purple-bg);">
+              <span class="command-cmd" style="color:var(--purple);">/product-ai-system refresh-persona</span>
+              <span class="command-desc">Update persona and journey definitions</span>
+            </div>
+            <div class="command-row" style="background:var(--purple-bg);">
+              <span class="command-cmd" style="color:var(--purple);">/product-ai-system sync-readme</span>
+              <span class="command-desc">Sync documentation to current system state</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="card-install">
+            <span class="card-install-label">Install</span>
+            <span class="card-install-cmd">cp product-ai-system/product-ai-system.md ~/.claude/commands/product-ai-system.md</span>
+          </div>
+          <div class="card-links">
+            <button class="card-link card-link--secondary" onclick="copyInstall(this, 'cp product-ai-system/product-ai-system.md ~/.claude/commands/product-ai-system.md')" style="cursor:pointer;">
+              Copy install
+            </button>
+            <a href="./product-ai-system/" class="card-link card-link--secondary">View files</a>
+            <a href="./product-ai-system/product-ai-system.md" class="card-link card-link--primary" download>Download</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- PORTFOLIO AI SYSTEM -->
+      <div class="system-card system-card--portfolio">
+        <div class="card-accent"></div>
+        <div class="card-body">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Portfolio AI System</div>
+              <div class="card-subtitle">For designers and PMs applying at Staff / Principal level</div>
+            </div>
+            <span class="card-status">Live</span>
+          </div>
+
+          <p class="card-desc">
+            Evaluates a portfolio the way a hiring manager actually reads it — not "looks good," but a structured pass across positioning, content signal density, UX, mobile, and copy quality. Runs a 7-step audit and produces exact before/after rewrites. Includes a hiring simulation that gives you a verdict from four perspectives: Recruiter, Hiring Manager, Design Leader, and AI/Product Leader.
+          </p>
+          <p class="card-desc" style="margin-top:-12px;">
+            Modular skills can be run independently — hire simulation only, mobile QA only, full-site consistency scan, or execution mode that applies all fixes directly to files.
+          </p>
+
+          <div class="card-pills">
+            <span class="card-pill">Define Intent</span>
+            <span class="card-pill">Diagnose Issues</span>
+            <span class="card-pill">Goal Alignment</span>
+            <span class="card-pill">Hiring Simulation</span>
+            <span class="card-pill">UX / QA / Mobile</span>
+            <span class="card-pill">Rewrite</span>
+            <span class="card-pill">Execution Plan</span>
+          </div>
+        </div>
+
+        <div class="card-commands">
+          <button class="commands-toggle" aria-expanded="false" onclick="toggleCommands(this)">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 2l4 4-4 4"/></svg>
+            All commands
+          </button>
+          <div class="commands-list">
+            <div class="command-row">
+              <span class="command-cmd">/portfolio-ai-system audit [portfolio]</span>
+              <span class="command-desc">Full 7-step audit — positioning, hiring sim, UX, rewrites, execution plan</span>
+            </div>
+            <div class="command-row">
+              <span class="command-cmd">/portfolio-ai-system scan-site [site]</span>
+              <span class="command-desc">Full cross-page audit — consistency, system-level issues, top 10 fixes</span>
+            </div>
+            <div class="command-row">
+              <span class="command-cmd">/portfolio-ai-system scan-site + execution [site]</span>
+              <span class="command-desc">Cross-page audit + apply all fixes page-by-page</span>
+            </div>
+            <div class="command-row">
+              <span class="command-cmd">/portfolio-ai-system content-strategy [portfolio]</span>
+              <span class="command-desc">Define what to say, what to remove, signal hierarchy, tone</span>
+            </div>
+            <div class="command-row">
+              <span class="command-cmd">/portfolio-ai-system strategy-check [site]</span>
+              <span class="command-desc">Validate site against its defined strategy — alignment score, gaps, top fixes</span>
+            </div>
+            <div class="command-row">
+              <span class="command-cmd">/portfolio-ai-system learn-site [pages]</span>
+              <span class="command-desc">Extract consistency baseline — positioning, tone, structure, CTA patterns</span>
+            </div>
+            <div class="command-row">
+              <span class="command-cmd">/portfolio-ai-system consistency-check [page]</span>
+              <span class="command-desc">Check a new or changed page against the established site patterns</span>
+            </div>
+            <div class="command-row">
+              <span class="command-cmd">/portfolio-ai-system rewrite [section]</span>
+              <span class="command-desc">Rewrite a specific section — headline, CTA, copy block</span>
+            </div>
+            <div class="command-row">
+              <span class="command-cmd">/hiring-simulation-skill [portfolio]</span>
+              <span class="command-desc">Hiring simulation only — 4-perspective verdicts</span>
+            </div>
+            <div class="command-row">
+              <span class="command-cmd">/mobile-qa-skill [page]</span>
+              <span class="command-desc">Mobile QA — 375px layout, overflow, tap targets checklist</span>
+            </div>
+            <div class="command-row">
+              <span class="command-cmd">/portfolio-execution-skill [audit output]</span>
+              <span class="command-desc">Apply all audit fixes directly to files — produces change log</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="card-install">
+            <span class="card-install-label">Install</span>
+            <span class="card-install-cmd">cp portfolio-ai-system/portfolio-ai-system.md ~/.claude/commands/portfolio-ai-system.md</span>
+          </div>
+          <div class="card-links">
+            <button class="card-link card-link--secondary" onclick="copyInstall(this, 'cp portfolio-ai-system/portfolio-ai-system.md ~/.claude/commands/portfolio-ai-system.md')" style="cursor:pointer;">
+              Copy install
+            </button>
+            <a href="./portfolio-ai-system/" class="card-link card-link--secondary">View files</a>
+            <a href="./portfolio-ai-system/portfolio-ai-system.md" class="card-link card-link--primary" download>Download</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADD MORE PLACEHOLDER -->
+      <div class="system-card system-card--add">
+        <div class="add-body">
+          <div class="add-icon">+</div>
+          <div>
+            <div class="add-text-title">More systems coming</div>
+            <div class="add-text-desc">
+              Each new system follows the same pattern: a <code>system-name.md</code> skill file, optional modular skills in <code>skills/</code>, optional named workflows in <code>workflows/</code>. Add a card here with the same structure — title, description, commands, install, download.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /systems -->
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <span class="footer-copy">Built by <a href="https://katejieyu.com" target="_blank" rel="noopener">Kate Jie Yu</a> · MIT License</span>
+      <span class="footer-principle">AI is not a tool — it is a system.</span>
+    </footer>
+
+  </div><!-- /page -->
+
+  <script>
+    function toggleCommands(btn) {
+      const list = btn.nextElementSibling;
+      const isOpen = list.classList.toggle('open');
+      btn.setAttribute('aria-expanded', isOpen);
+      btn.querySelector('span') && null; // no-op
+    }
+
+    function copyInstall(btn, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const original = btn.textContent;
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = original;
+          btn.classList.remove('copied');
+        }, 1800);
+      });
+    }
+  </script>
+</body>
+</html>

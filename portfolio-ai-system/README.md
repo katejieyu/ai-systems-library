@@ -53,6 +53,7 @@ cp skills/portfolio-execution-skill.md ~/.claude/commands/portfolio-execution-sk
 | `/portfolio-ai-system hiring [portfolio]` | Hiring simulation only |
 | `/portfolio-ai-system learn-site [existing pages]` | Extract consistency guide from current site |
 | `/portfolio-ai-system consistency-check [new page]` | Check a new page against the site's established patterns |
+| `/portfolio-execution-skill [audit output or page]` | Execute all fixes directly to files — produces change log |
 
 Individual skills:
 

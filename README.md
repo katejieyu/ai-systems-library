@@ -21,6 +21,7 @@ ai-systems/
       homepage-rewrite-skill.md
       mobile-qa-skill.md
       portfolio-consistency-skill.md
+      portfolio-execution-skill.md
 
   product-ai-system/
     README.md

@@ -12,11 +12,14 @@ Evaluates portfolios as products competing for hiring decisions. Runs a 7-step w
 |---|---|
 | `portfolio-ai-system.md` | Main skill file -- install this |
 | `portfolio-audit-workflow.md` | Full 7-step audit workflow (standalone) |
+| `workflows/portfolio-site-scan-workflow.md` | Full-site scan across all pages — cross-page consistency, system-level issues, top 10 fixes |
 | `skills/hiring-simulation-skill.md` | 4-perspective hiring simulation with interview verdicts |
 | `skills/homepage-rewrite-skill.md` | Headline, subtext, CTA, and section label rewrites |
 | `skills/mobile-qa-skill.md` | 375px mobile responsiveness and overflow QA checklist |
 | `skills/portfolio-consistency-skill.md` | Extracts positioning, tone, and structure patterns for cross-page consistency |
+| `skills/portfolio-content-strategy-skill.md` | Defines content strategy — what to say, what to remove, signal hierarchy, tone, CTA, and section priorities |
 | `skills/portfolio-execution-skill.md` | Executes audit findings and rewrites directly to portfolio files — produces a change log |
+| `skills/site-execution-skill.md` | Turns scan-site findings into page-by-page implementation-ready changes — canonical decisions first, then exact fixes per page |
 
 ---
 
@@ -33,7 +36,10 @@ cp skills/hiring-simulation-skill.md ~/.claude/commands/hiring-simulation-skill.
 cp skills/homepage-rewrite-skill.md ~/.claude/commands/homepage-rewrite-skill.md
 cp skills/mobile-qa-skill.md ~/.claude/commands/mobile-qa-skill.md
 cp skills/portfolio-consistency-skill.md ~/.claude/commands/portfolio-consistency-skill.md
+cp skills/portfolio-content-strategy-skill.md ~/.claude/commands/portfolio-content-strategy-skill.md
 cp skills/portfolio-execution-skill.md ~/.claude/commands/portfolio-execution-skill.md
+cp skills/site-execution-skill.md ~/.claude/commands/site-execution-skill.md
+cp workflows/portfolio-site-scan-workflow.md ~/.claude/commands/portfolio-site-scan-workflow.md
 ```
 
 ---
@@ -53,7 +59,11 @@ cp skills/portfolio-execution-skill.md ~/.claude/commands/portfolio-execution-sk
 | `/portfolio-ai-system hiring [portfolio]` | Hiring simulation only |
 | `/portfolio-ai-system learn-site [existing pages]` | Extract consistency guide from current site |
 | `/portfolio-ai-system consistency-check [new page]` | Check a new page against the site's established patterns |
+| `/portfolio-ai-system strategy-check [site/folder]` | Validate site against its content strategy — alignment score, drift, gaps, top fixes |
 | `/portfolio-execution-skill [audit output or page]` | Execute all fixes directly to files — produces change log |
+| `/portfolio-ai-system scan-site [site]` | Full-site audit across all pages — cross-page consistency, system-level issues, top 10 fixes |
+| `/portfolio-ai-system scan-site + execution [site]` | Full-site audit + page-by-page fix generation |
+| `/site-execution-skill [scan-site report]` | Apply scan-site findings as page-by-page exact changes — produces change log |
 
 Individual skills:
 
@@ -63,7 +73,9 @@ Individual skills:
 | `/homepage-rewrite-skill [page]` | Homepage copy rewrite |
 | `/mobile-qa-skill [page]` | Mobile QA checklist |
 | `/portfolio-consistency-skill [portfolio]` | Extract consistency guide for new pages |
+| `/portfolio-content-strategy-skill [portfolio]` | Define content strategy — pillars, signal hierarchy, tone, what to remove |
 | `/portfolio-execution-skill [audit output or page]` | Execute fixes directly to portfolio files |
+| `/site-execution-skill [scan-site report or site]` | Apply scan-site findings page-by-page — canonical decisions, exact replacements, change log |
 
 ---
 

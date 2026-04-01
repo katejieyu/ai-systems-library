@@ -25,16 +25,21 @@ This system helps:
 
 ---
 
-## How to Use
+## Commands
 
-- `/portfolio-ai-system audit [portfolio]` -- full audit
-- `/portfolio-ai-system rewrite [section]` -- rewrite specific parts
-- `/portfolio-ai-system qa [site/folder]` -- links, logic, structure
-- `/portfolio-ai-system mobile [page]` -- responsive + overflow check
-- `/portfolio-ai-system hiring [portfolio]` -- hiring simulation only
-- `/portfolio-ai-system learn-site [existing pages]` -- extract consistency guide from current site
-- `/portfolio-ai-system consistency-check [new page]` -- check a new or rewritten page against the site's established patterns
-- `/portfolio-execution-skill [audit output or page]` -- execute all fixes directly to files, produce change log
+- `/portfolio-ai-system audit` — single-page audit
+- `/portfolio-ai-system scan-site` — full-site audit
+- `/portfolio-ai-system scan-site + execution` — audit + apply fixes
+- `/portfolio-ai-system content-strategy` — define portfolio content strategy
+- `/portfolio-ai-system rewrite` — rewrite specific page
+- `/portfolio-ai-system consistency-check` — validate against system
+- `/portfolio-ai-system strategy-check` — validate site against its content strategy
+
+**Recommended flow:**
+
+```
+scan-site → content-strategy → consistency → execution
+```
 
 ---
 
@@ -50,6 +55,37 @@ This system helps:
 8. Treat the portfolio as a product -- evaluate clarity, usability, differentiation
 9. Always include rewrite suggestions when possible
 10. Always think in terms of **"Would I interview this person?"**
+
+## Additional Rules
+
+- Always create a page inventory for site-level tasks
+- Always run Page Loop before cross-page analysis
+- Do not skip pages unless explicitly excluded
+- Always identify contradictions across pages
+- Always define canonical wording for inconsistencies
+- If execution is requested, generate page-by-page fixes
+
+---
+
+# Page Loop (Site-Level Audits)
+
+When running `/portfolio-ai-system scan-site`, use this loop for EACH page:
+
+1. Identify page type
+2. Evaluate positioning — does it match the intended level?
+3. Check content clarity — specific, high-signal, or vague and generic?
+4. Check navigation and CTA — correct targets, consistent wording, no dead links?
+5. Check UX and readability — scan pattern, cognitive load, hierarchy
+6. Check mobile risk — overflow, tap targets, layout break
+7. Identify missing signals — what is absent that should be there?
+
+Per-page output format:
+
+**[Page Name]**
+- Issues:
+- Strengths:
+- Missing Signals:
+- Recommended Fixes:
 
 ---
 
@@ -313,7 +349,25 @@ Ordered list: fix | section | effort (low/med/high)
 
 ---
 
-# Output Format
+# Command: scan-site
+
+**Invoke:** `/portfolio-ai-system scan-site [site/folder]`
+**Execution mode:** `/portfolio-ai-system scan-site + execution [site/folder]`
+
+**When to use:** Full-site audit across all pages. Use before a hiring-facing polish pass, when checking cross-page consistency, or when validating naming and navigation systems.
+
+**Instructions:**
+
+1. Discover all pages — create a page inventory with page type and audit status
+2. Run the Page Loop on every page
+3. Compare all pages for cross-page contradictions (footer, CTAs, product naming, role title, navigation pattern)
+4. For every contradiction found, decide one canonical version
+5. Aggregate findings into a prioritized fix list ordered by hiring impact
+6. If execution mode is requested, generate page-by-page exact text replacements after the cross-page report
+
+**Output:** See `workflows/portfolio-site-scan-workflow.md` for full output format.
+
+---
 
 ## 1. Executive Summary
 Top 5 critical issues
@@ -357,3 +411,68 @@ Top 5 critical issues
 - Prioritize impact
 - Always include rewrites
 - Always think hiring-first
+
+---
+
+# Command: strategy-check
+
+**Invoke:** `/portfolio-ai-system strategy-check [site/folder]`
+
+**When to use:** After content strategy has been defined. Run to validate whether the site actually follows the strategy — not to redefine it. Use before a hiring-facing polish pass or after major rewrites.
+
+**Instructions:**
+
+This command does NOT redefine strategy. It validates execution against existing strategy.
+
+1. Extract the current strategy from the site itself (infer positioning, pillars, tone, hierarchy)
+2. Evaluate every page against that strategy
+3. Identify where strategy is held, broken, or drifted
+4. Assess hiring signal strength and consistency
+5. Surface gaps — what is missing that the strategy requires
+6. Produce top-priority strategy fixes only (not UI, not copy tweaks)
+
+**Output:**
+
+### Current Strategy (inferred)
+- Positioning (level, identity)
+- Core narrative
+- Content pillars
+- Tone and style
+- Section priorities
+
+---
+
+### Alignment Score
+[0–100] — with one-sentence reason
+
+---
+
+### Where Strategy Holds
+Bullet list: page or section + what it does correctly
+
+---
+
+### Where Strategy Breaks
+Table: page | issue | impact on hiring signal
+
+---
+
+### Critical Gaps
+- Missing signals
+- Missing narrative
+- Missing emphasis
+
+---
+
+### Top 5 Strategy Fixes
+Ordered by hiring impact: fix | what it addresses | effort (low/med/high)
+
+---
+
+## Rules for strategy-check output
+
+- Focus on strategy, not UI details
+- Be decisive — name the problem exactly
+- Prioritize hiring impact
+- No generic feedback
+- Every fix must address a specific strategic failure, not a stylistic preference

@@ -71,7 +71,7 @@ Moves product work from raw problem to execution-ready output through a 9-skill 
 
 A portfolio strategy, audit, and rewrite system for job applications at Staff / Principal level.
 
-Evaluates portfolios as products competing for hiring decisions. Runs a 7-step workflow: intent definition, issue diagnosis, goal alignment, hiring simulation, UX/QA check, rewrite, and execution plan. Includes consistency tools for keeping new pages aligned with the existing site.
+Evaluates portfolios as products competing for hiring decisions. Runs a 7-step workflow: intent definition, issue diagnosis, goal alignment, hiring simulation, UX/QA check, rewrite, and execution plan. Includes consistency tools for keeping new pages aligned with the existing site, and an execution skill that applies all fixes directly to files.
 
 **Skill file:** `portfolio-ai-system/portfolio-ai-system.md`
 **Install:** `cp portfolio-ai-system/portfolio-ai-system.md ~/.claude/commands/portfolio-ai-system.md`
@@ -88,6 +88,7 @@ Evaluates portfolios as products competing for hiring decisions. Runs a 7-step w
 | `/portfolio-ai-system hiring [portfolio]` | Hiring simulation only |
 | `/portfolio-ai-system learn-site [existing pages]` | Extract consistency guide from current site |
 | `/portfolio-ai-system consistency-check [new page]` | Check a new page against the site's established patterns |
+| `/portfolio-execution-skill [audit output or page]` | Execute all fixes directly to files — produces change log |
 
 **Modular Skills** (install and invoke independently):
 

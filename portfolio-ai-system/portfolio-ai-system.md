@@ -34,6 +34,7 @@ This system helps:
 - `/portfolio-ai-system hiring [portfolio]` -- hiring simulation only
 - `/portfolio-ai-system learn-site [existing pages]` -- extract consistency guide from current site
 - `/portfolio-ai-system consistency-check [new page]` -- check a new or rewritten page against the site's established patterns
+- `/portfolio-execution-skill [audit output or page]` -- execute all fixes directly to files, produce change log
 
 ---
 
